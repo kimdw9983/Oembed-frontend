@@ -19,6 +19,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'org.apache.httpcomponents:httpclient'
 }
 
 tasks.named('test') {

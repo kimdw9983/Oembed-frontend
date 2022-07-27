@@ -2,9 +2,16 @@ package com.oembed.frontend;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,19 +29,38 @@ public class OEmbedFrontendController {
         return new ModelAndView("index");
     }
 
+    @SuppressWarnings("unchecked")
     @GetMapping("/oembed")
     public ModelAndView result(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("result");
-        
+        ModelAndView mv = new ModelAndView("oembed");
+
+        String api = "http://localhost:8080/oembed/";
         String url = request.getParameter("url");
+        String request_url = api + url;
+
+        HttpEntity entity = null;
+		try {
+			HttpClient client = HttpClientBuilder.create().build();
+			HttpGet httpget = new HttpGet(request_url);
+			HttpResponse response = client.execute(httpget);
+            entity = response.getEntity();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(entity);
+
+        Map<String, Object> data = null;
         JsonNode json = null;
         try {
-            json = mapper.readTree(new URL(url));
+            data = mapper.readValue(EntityUtils.toString(entity), Map.class);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(data);
+        System.out.println("วั?ฑÛ");
+
         if (json == null) {
             mv.addObject("status", "NOT_FOUND");
             mv.addObject("data", null);

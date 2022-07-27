@@ -1,7 +1,6 @@
 package com.oembed.frontend;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +36,8 @@ public class OEmbedFrontendController {
         String api = "http://localhost:8080/oembed/";
         String url = request.getParameter("url");
         String request_url = api + url;
+        //String request_url =  url;
+        System.out.println(request_url);
 
         HttpEntity entity = null;
 		try {
@@ -47,7 +48,6 @@ public class OEmbedFrontendController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(entity);
 
         Map<String, Object> data = null;
         JsonNode json = null;
@@ -58,17 +58,13 @@ public class OEmbedFrontendController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(data);
-        System.out.println("วั?ฑÛ");
-
         if (json == null) {
             mv.addObject("status", "NOT_FOUND");
             mv.addObject("data", null);
         }
-
-        System.out.println(json);
-        //mv.addObject("status", json.get("status"));
-        //mv.addObject("data", json.get("data"));
+        
+        mv.addObject("status", data.get("status"));
+        mv.addObject("data", data.get("data"));
         return mv;
     }
 }

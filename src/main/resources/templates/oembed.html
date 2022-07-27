@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>oEmbed</title>
 </head>
 <body>
-	TEST
+	<script th:inline="javascript">
+		var status = [[${status}]];
+		var data = [[${data}]];
+
+		if (status != "OK") {
+			alert(data);
+			history.back();
+		} else {
+			console.log(data);
+		}
+
+		var X = true
+		if ('type' in data) {
+			X = true
+		}
+
+	</script>
+	<table border="1px" style="width: 90%">
+		<tr>
+			<td>author_name</td>
+			<td><span th:text="${data.author_name}"/></td>
+		</tr>
+		<tr>
+			<td>author_url</td>
+			<td><span th:text="${data.author_url}"/></td>
+		</tr>
+		<tr>
+			<td>type</td>
+			<td><span th:text="${data.type}"/></td>
+		</tr>
+		
+		<tr>
+			<td>html</td>
+			<td><span th:utext="${data.html}"/></td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td><span th:text="${data.height}"/></td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td><span th:text="${data.width}"/></td>
+		</tr>
+
+		<tr>
+			<td>provider_name</td>
+			<td><span th:text="${data.provider_name}"/></td>
+		</tr>
+		<tr>
+			<td>provider_url</td>
+			<td><span th:text="${data.provider_url}"/></td>
+		</tr>
+		<tr>
+			<td>version</td>
+			<td><span th:text="${data.version}"/></td>
+		</tr>
+
+		<tr th:if="${data?.title}">
+			<td>title</td>
+			<td><span th:text="${data.title}"/></td>
+		</tr>
+		<tr th:if="${data?.thumbnail_url}">
+			<td>thumbnail_url</td>
+			<td><img th:src="${data.thumbnail_url}"/></td>
+		</tr>
+		<tr th:if="${data.thumbnail_width}">
+			<td>thumbnail_width</td>
+			<td><span th:text="${data.thumbnail_width}"/></td>
+		</tr>
+		<tr th:if="${data.thumbnail_height}">
+			<td>thumbnail_height</td>
+			<td><span th:text="${data.thumbnail_height}"/></td>
+		</tr>
+	</table>
 </body>
 </html>
